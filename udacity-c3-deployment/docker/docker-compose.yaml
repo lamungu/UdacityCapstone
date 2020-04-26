@@ -1,0 +1,25 @@
+version: "3"
+services:
+  reverseproxy:
+      image: lamungu/udacity-cp-reverseproxy
+      ports:
+          - 8080:8080
+      restart: always
+      depends_on:
+        - backend-user
+  backend-user:
+    image: lamungu/udacity-cp-user-service
+    environment:
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD 
+      POSTGRES_DATABASE: $POSTGRES_DATABASE 
+      POSTGRES_HOST: $POSTGRES_HOST 
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWS_BUCKET: $AWS_BUCKET
+      JWT_SECRET: $JWT_SECRET
+      URL: "http://localhost:8100"
+  frontend:
+    image: lamungu/udacity-cp-frontend
+    ports:
+      - "8100:80"

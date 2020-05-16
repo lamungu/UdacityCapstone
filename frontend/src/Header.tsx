@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {Link} from 'react-router-dom'
+import { AuthContext } from './Auth';
 
 function Header() {
+    const {token, user} = useContext(AuthContext);
     return (
         <header className="header_sticky">
             <div className="container">
@@ -14,7 +16,7 @@ function Header() {
                     <nav className="col-lg-9 col-6">
                         <a className="cmn-toggle-switch cmn-toggle-switch__htx open_close" href="#0"><span>Menu mobile</span></a>
                         <ul id="top_access">
-                            {true ? (
+                            {!(token && user)  ? (
                                 <li id="">
                                     <Link to="/login">
                                         <i className="pe-7s-user"></i>
@@ -24,7 +26,7 @@ function Header() {
                                 <li id="user">
                                     <Link to="/my">
                                         <figure><img src="http://via.placeholder.com/150x150.jpg" alt=""/></figure>
-                                        Ben Loaf
+                                        {user.email}
                                     </Link>
                                 </li>
                             )}

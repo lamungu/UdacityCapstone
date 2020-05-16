@@ -23,7 +23,6 @@ async function comparePasswords(plainTextPassword: string, hash: string): Promis
 }
 
 function generateJWT(user: User): string {
-    console.log("generateJWT")
     return jwt.sign(user.short(), c.config.jwt.secret)
 }
 
@@ -33,7 +32,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
 
     const token_bearer = req.headers.authorization.split(' ');
-    if(token_bearer.length != 2){
+    if (token_bearer.length != 2) {
         return res.status(401).send({ message: 'Malformed token.' });
     }
     
@@ -67,14 +66,14 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const user = await User.findByPk(email);
     // check that user exists
-    if(!user) {
+    if (!user) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
 
     // check that the password matches
     const authValid = await comparePasswords(password, user.password_hash)
 
-    if(!authValid) {
+    if (!authValid) {
         return res.status(401).send({ auth: false, message: 'Unauthorized' });
     }
 
@@ -84,7 +83,7 @@ router.post('/login', async (req: Request, res: Response) => {
     res.status(200).send({ auth: true, token: jwt, user: user.short()});
 });
 
-//register a new user
+// Register a new user
 router.post('/', async (req: Request, res: Response) => {
     const email = req.body.email;
     const plainTextPassword = req.body.password;
